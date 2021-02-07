@@ -23,8 +23,9 @@ public class Usuario implements Serializable{
 	private Long id;
 	private String nome;
 	
-	@Column(unique=true)
+	@Column(length = 128, unique=true)
 	private String email;
+	@Column(length = 11, unique=true)
 	private String cpf;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")

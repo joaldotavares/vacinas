@@ -1,7 +1,7 @@
 package com.joaldo.vacinas.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ public class Vacina implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
-	private Date instante;
+	private Instant instante;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -31,7 +31,7 @@ public class Vacina implements Serializable{
 		super();
 	}
 
-	public Vacina(Long id, String nome, Date instante, Usuario usuario) {
+	public Vacina(Long id, String nome, Instant instante, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -55,11 +55,11 @@ public class Vacina implements Serializable{
 		this.nome = nome;
 	}
 
-	public Date getInstante() {
+	public Instant getInstante() {
 		return instante;
 	}
 
-	public void setInstante(Date instante) {
+	public void setInstante(Instant instante) {
 		this.instante = instante;
 	}
 
