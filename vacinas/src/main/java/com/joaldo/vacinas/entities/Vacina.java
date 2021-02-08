@@ -2,13 +2,16 @@ package com.joaldo.vacinas.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,20 +26,21 @@ public class Vacina implements Serializable{
 	private String nome;
 	private Instant instante;
 	
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
+	@ManyToMany
+	@JoinTable(name = "tb_usuario_vacina",
+				joinColumns = @JoinColumn(name = "vacina_id"),
+				inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> usuario = new HashSet<>();
 
 	public Vacina() {
 		super();
 	}
 
-	public Vacina(Long id, String nome, Instant instante, Usuario usuario) {
+	public Vacina(Long id, String nome, Instant instante) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.instante = instante;
-		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -63,13 +67,10 @@ public class Vacina implements Serializable{
 		this.instante = instante;
 	}
 
-	public Usuario getUsuario() {
+	public Set<Usuario> getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
 
 	@Override
 	public int hashCode() {

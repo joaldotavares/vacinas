@@ -35,9 +35,5 @@ public class UsuarioService {
 		usuario = usuarioRepository.save(usuario);
 		return new UsuarioDTO(usuario);
 	}
-	
-	public Usuario fromDTO(UsuarioDTO dto) {
-		return new Usuario(dto.getId(), dto.getNome(), dto.getEmail(), dto.getCpf(), dto.getNascimento());
-	}
 
 }

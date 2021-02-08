@@ -3,6 +3,8 @@ package com.joaldo.vacinas.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,18 +26,11 @@ public class VacinaController {
 	
 	@Autowired
 	private VacinaService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<VacinaDTO>> findAll(){
 		List<VacinaDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Vacina> find(@PathVariable Long id){
-		Vacina obj = service.find(id);
-		
-		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
@@ -43,5 +38,17 @@ public class VacinaController {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
+	}
+	
+	@RequestMapping(value = "/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody VacinaDTO objDto, @PathVariable Long id){
+		Vacina obj = service.fromDTO(objDto);
+		
+		obj.setId(id);
+		
+		obj = service.update(obj);
+		
+		return ResponseEntity.noContent().build();
+		
 	}
 }

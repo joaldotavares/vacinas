@@ -2,14 +2,15 @@ package com.joaldo.vacinas.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.joaldo.vacinas.entities.Usuario;
 import com.joaldo.vacinas.entities.Vacina;
-import com.sun.istack.NotNull;
 
 public class VacinaDTO implements Serializable{
 	
@@ -21,18 +22,18 @@ public class VacinaDTO implements Serializable{
 	private String nome;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private Instant instante;
-	private Usuario usuario;
+	
+	private List<UsuarioDTO> usuario = new ArrayList<>();
 	
 	public VacinaDTO() {
 		super();
 	}
 
-	public VacinaDTO(Long id, String nome, Instant instante, Usuario usuario) {
+	public VacinaDTO(Long id, String nome, Instant instante) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.instante = instante;
-		this.usuario = usuario;
 	}
 	
 	public VacinaDTO(Vacina entity) {
@@ -40,7 +41,7 @@ public class VacinaDTO implements Serializable{
 		id = entity.getId();
 		nome = entity.getNome();
 		instante = entity.getInstante();
-		usuario = entity.getUsuario();
+		usuario = entity.getUsuario().stream().map(x -> new UsuarioDTO(x)).collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -67,7 +68,7 @@ public class VacinaDTO implements Serializable{
 		this.instante = instante;
 	}
 
-	public Usuario getUsuario() {
+	public List<UsuarioDTO> getUsuario() {
 		return usuario;
 	}	
 	
